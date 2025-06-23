@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:social": "jest tests/social/",
+    "test:marketing": "jest tests/marketing/",
+    "test:business": "jest tests/business/",
+    "test:integration": "jest tests/integration/",
+    "test:e2e": "jest tests/integration/e2e-workflow.test.ts"
+  }
+}

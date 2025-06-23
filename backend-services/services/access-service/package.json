@@ -1,7 +1,7 @@
 {
-  "name": "tickettoken-nft-service",
+  "name": "tickettoken-access-service",
   "version": "1.0.0",
-  "description": "nft-service for TicketToken platform",
+  "description": "access-service for TicketToken platform",
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",

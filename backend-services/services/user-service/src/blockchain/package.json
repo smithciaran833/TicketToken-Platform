@@ -1,0 +1,9 @@
+{
+  "name": "blockchain-utils",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/web3.js": "^1.98.2"
+  }
+}

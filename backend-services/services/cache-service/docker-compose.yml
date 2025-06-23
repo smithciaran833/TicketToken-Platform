@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  cache-service:
+    build: .
+    ports:
+      - "3030:3030"
+    environment:
+      - NODE_ENV=production
+      - PORT=3030
+      - REDIS_CLUSTER_HOSTS=redis-primary-1,redis-primary-2,redis-primary-3
+      - REDIS_FALLBACK_HOST=redis-fallback
+      - REDIS_FALLBACK_PORT=6379
+    depends_on:
+      - redis-primary-1
+      - redis-fallback
+    networks:
+      - cache-network
+
+  redis-primary-1:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --cluster-enabled yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-primary-1-data:/data
+    networks:
+      - cache-network
+
+  redis-primary-2:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --cluster-enabled yes
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-primary-2-data:/data
+    networks:
+      - cache-network
+
+  redis-primary-3:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --cluster-enabled yes
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis-primary-3-data:/data
+    networks:
+      - cache-network
+
+  redis-fallback:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "6382:6379"
+    volumes:
+      - redis-fallback-data:/data
+    networks:
+      - cache-network
+
+volumes:
+  redis-primary-1-data:
+  redis-primary-2-data:
+  redis-primary-3-data:
+  redis-fallback-data:
+
+networks:
+  cache-network:
+    driver: bridge

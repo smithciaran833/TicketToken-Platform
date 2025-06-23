@@ -1,0 +1,20 @@
+[package]
+name = "revenue-splitter"
+version = "0.1.0"
+description = "revenue-splitter smart contract for TicketToken"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "revenue_splitter"
+
+[dependencies]
+anchor-lang = "0.28.0"
+anchor-spl = "0.28.0"
+
+[features]
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+default = []

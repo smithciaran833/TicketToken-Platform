@@ -1,0 +1,2516 @@
+{
+  "version": "0.1.0",
+  "name": "ticket_core",
+  "instructions": [
+    {
+      "name": "createEvent",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "venue",
+          "type": "string"
+        },
+        {
+          "name": "eventDate",
+          "type": "i64"
+        },
+        {
+          "name": "totalTickets",
+          "type": "u32"
+        },
+        {
+          "name": "generalPrice",
+          "type": "u64"
+        },
+        {
+          "name": "vipPrice",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updateEvent",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "description",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "venue",
+          "type": {
+            "option": "string"
+          }
+        },
+        {
+          "name": "eventDate",
+          "type": {
+            "option": "i64"
+          }
+        },
+        {
+          "name": "ticketPrice",
+          "type": {
+            "option": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "cancelEvent",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "mintTicket",
+      "accounts": [
+        {
+          "name": "buyer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "eventAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tier",
+          "type": "string"
+        },
+        {
+          "name": "seatNumber",
+          "type": {
+            "option": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "batchMint",
+      "accounts": [
+        {
+          "name": "buyer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "eventAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "count",
+          "type": "u32"
+        },
+        {
+          "name": "tier",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "mintWhitelist",
+      "accounts": [
+        {
+          "name": "buyer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "eventAuthority",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "tier",
+          "type": "string"
+        },
+        {
+          "name": "seatNumber",
+          "type": {
+            "option": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "transferTicket",
+      "accounts": [
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "event",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The current owner transferring the ticket"
+          ]
+        },
+        {
+          "name": "to",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The new owner receiving the ticket"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "validateEntry",
+      "accounts": [
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "event",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "validationRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "validator",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The gate staff validating the ticket"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "validationType",
+          "type": {
+            "defined": "ValidationType"
+          }
+        }
+      ]
+    },
+    {
+      "name": "freezeTicket",
+      "accounts": [
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "event",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "freezeRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "Event organizer or fraud prevention authority"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": {
+            "defined": "FreezeReason"
+          }
+        }
+      ]
+    },
+    {
+      "name": "requestRefund",
+      "accounts": [
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "event",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "refundRequest",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "buyer",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "eventTreasury",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "reason",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "processRefund",
+      "accounts": [
+        {
+          "name": "event",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "refundRequest",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancelRefund",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "emergencyPause",
+      "accounts": [
+        {
+          "name": "programState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "emergencyUnpause",
+      "accounts": [
+        {
+          "name": "programState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "setCompliance",
+      "accounts": [
+        {
+          "name": "complianceConfig",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "updateAuthorities",
+      "accounts": [
+        {
+          "name": "programState",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "newAuthority",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "RefundRequest",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ticket",
+            "type": "publicKey"
+          },
+          {
+            "name": "requester",
+            "type": "publicKey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          },
+          {
+            "name": "requestedAt",
+            "type": "i64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "RefundStatus"
+            }
+          },
+          {
+            "name": "processedAt",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "processor",
+            "type": {
+              "option": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventAnalytics",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event",
+            "type": "publicKey"
+          },
+          {
+            "name": "totalRevenue",
+            "type": "u64"
+          },
+          {
+            "name": "totalRefunds",
+            "type": "u64"
+          },
+          {
+            "name": "uniqueBuyers",
+            "type": "u32"
+          },
+          {
+            "name": "repeatBuyers",
+            "type": "u32"
+          },
+          {
+            "name": "averagePrice",
+            "type": "u64"
+          },
+          {
+            "name": "peakSalesTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "peakSalesCount",
+            "type": "u32"
+          },
+          {
+            "name": "salesByTier",
+            "type": {
+              "vec": {
+                "defined": "TierAnalytics"
+              }
+            }
+          },
+          {
+            "name": "salesByHour",
+            "type": {
+              "array": [
+                "u32",
+                24
+              ]
+            }
+          },
+          {
+            "name": "geographicDistribution",
+            "type": {
+              "vec": {
+                "defined": "GeoData"
+              }
+            }
+          },
+          {
+            "name": "referralSources",
+            "type": {
+              "vec": {
+                "defined": "ReferralData"
+              }
+            }
+          },
+          {
+            "name": "conversionRate",
+            "type": "f32"
+          },
+          {
+            "name": "abandonmentRate",
+            "type": "f32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ComplianceConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "kycRequired",
+            "type": "bool"
+          },
+          {
+            "name": "kycProvider",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "amlRequired",
+            "type": "bool"
+          },
+          {
+            "name": "amlThreshold",
+            "type": "u64"
+          },
+          {
+            "name": "ageRestriction",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "blockedRegions",
+            "type": {
+              "vec": {
+                "array": [
+                  "u8",
+                  2
+                ]
+              }
+            }
+          },
+          {
+            "name": "whitelistOnly",
+            "type": "bool"
+          },
+          {
+            "name": "sanctionsList",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "reportingEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "dataRetentionDays",
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserCompliance",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "publicKey"
+          },
+          {
+            "name": "kycStatus",
+            "type": {
+              "defined": "KycStatus"
+            }
+          },
+          {
+            "name": "kycTimestamp",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "kycExpiry",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "amlScore",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "region",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  2
+                ]
+              }
+            }
+          },
+          {
+            "name": "ageVerified",
+            "type": {
+              "option": "u8"
+            }
+          },
+          {
+            "name": "totalSpent",
+            "type": "u64"
+          },
+          {
+            "name": "flagged",
+            "type": "bool"
+          },
+          {
+            "name": "verifiedBy",
+            "type": {
+              "option": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Event",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "eventId",
+            "type": "u64"
+          },
+          {
+            "name": "organizer",
+            "type": "publicKey"
+          },
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "treasury",
+            "type": "publicKey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "venue",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "cancelledAt",
+            "type": "i64"
+          },
+          {
+            "name": "cancellationReason",
+            "type": "string"
+          },
+          {
+            "name": "refundEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "eventDate",
+            "type": "i64"
+          },
+          {
+            "name": "startTime",
+            "type": "i64"
+          },
+          {
+            "name": "endTime",
+            "type": "i64"
+          },
+          {
+            "name": "totalTickets",
+            "type": "u32"
+          },
+          {
+            "name": "ticketsSold",
+            "type": "u32"
+          },
+          {
+            "name": "ticketsUsed",
+            "type": "u32"
+          },
+          {
+            "name": "ticketsBurned",
+            "type": "u32"
+          },
+          {
+            "name": "generalPrice",
+            "type": "u64"
+          },
+          {
+            "name": "vipPrice",
+            "type": "u64"
+          },
+          {
+            "name": "cancelled",
+            "type": "bool"
+          },
+          {
+            "name": "transferable",
+            "type": "bool"
+          },
+          {
+            "name": "transferFreezeTime",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "gateStaff",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "freezeAuthorities",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "burnAuthorities",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "tiers",
+            "type": {
+              "vec": {
+                "defined": "TicketTier"
+              }
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "refundPolicy",
+            "type": {
+              "defined": "RefundPolicy"
+            }
+          },
+          {
+            "name": "complianceRules",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "isPaused",
+            "type": "bool"
+          },
+          {
+            "name": "pauseAuthority",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "priceMultiplier",
+            "type": "u16"
+          },
+          {
+            "name": "lastPriceUpdate",
+            "type": "i64"
+          },
+          {
+            "name": "insurancePool",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "analyticsEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "maxTicketsPerWallet",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "updatedAt",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InsurancePool",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "treasury",
+            "type": "publicKey"
+          },
+          {
+            "name": "totalCoverage",
+            "type": "u64"
+          },
+          {
+            "name": "availableFunds",
+            "type": "u64"
+          },
+          {
+            "name": "premiumBasisPoints",
+            "type": "u16"
+          },
+          {
+            "name": "maxClaimPerEvent",
+            "type": "u64"
+          },
+          {
+            "name": "maxClaimPerTicket",
+            "type": "u64"
+          },
+          {
+            "name": "claimsProcessed",
+            "type": "u32"
+          },
+          {
+            "name": "claimsPaid",
+            "type": "u64"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InsuranceClaim",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "claimant",
+            "type": "publicKey"
+          },
+          {
+            "name": "ticket",
+            "type": "publicKey"
+          },
+          {
+            "name": "event",
+            "type": "publicKey"
+          },
+          {
+            "name": "claimType",
+            "type": {
+              "defined": "ClaimType"
+            }
+          },
+          {
+            "name": "amountRequested",
+            "type": "u64"
+          },
+          {
+            "name": "amountApproved",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "ClaimStatus"
+            }
+          },
+          {
+            "name": "submittedAt",
+            "type": "i64"
+          },
+          {
+            "name": "processedAt",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "evidence",
+            "type": "string"
+          },
+          {
+            "name": "processor",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "rejectionReason",
+            "type": {
+              "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProgramState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "name": "pausedAt",
+            "type": "i64"
+          },
+          {
+            "name": "feeRecipient",
+            "type": "publicKey"
+          },
+          {
+            "name": "platformFeeBasisPoints",
+            "type": "u16"
+          },
+          {
+            "name": "totalEvents",
+            "type": "u64"
+          },
+          {
+            "name": "totalTicketsSold",
+            "type": "u64"
+          },
+          {
+            "name": "totalFeesCollected",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundRequest",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ticketMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "requester",
+            "type": "publicKey"
+          },
+          {
+            "name": "event",
+            "type": "publicKey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "RefundStatus"
+            }
+          },
+          {
+            "name": "requestedAt",
+            "type": "i64"
+          },
+          {
+            "name": "processedAt",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "reason",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Ticket",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "version",
+            "type": "u8"
+          },
+          {
+            "name": "ticketId",
+            "type": "u64"
+          },
+          {
+            "name": "event",
+            "type": "publicKey"
+          },
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "originalOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "tierIndex",
+            "type": {
+              "defined": "usize"
+            }
+          },
+          {
+            "name": "purchasePrice",
+            "type": "u64"
+          },
+          {
+            "name": "purchasedAt",
+            "type": "i64"
+          },
+          {
+            "name": "used",
+            "type": "bool"
+          },
+          {
+            "name": "usedAt",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "isFrozen",
+            "type": "bool"
+          },
+          {
+            "name": "freezeTimestamp",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "unfreezeTimestamp",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "entryValidated",
+            "type": "bool"
+          },
+          {
+            "name": "entryTime",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "entryGate",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "exitTime",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "exitGate",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "transferCount",
+            "type": "u32"
+          },
+          {
+            "name": "lastTransferTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "pendingTransfer",
+            "type": "bool"
+          },
+          {
+            "name": "validationCount",
+            "type": "u32"
+          },
+          {
+            "name": "lastValidated",
+            "type": "i64"
+          },
+          {
+            "name": "checkpointScans",
+            "type": {
+              "vec": {
+                "defined": "(String,i64)"
+              }
+            }
+          },
+          {
+            "name": "transferHistory",
+            "type": {
+              "vec": {
+                "defined": "TransferRecord"
+              }
+            }
+          },
+          {
+            "name": "delegateTransferHistory",
+            "type": {
+              "vec": {
+                "defined": "DelegateTransferRecord"
+              }
+            }
+          },
+          {
+            "name": "metadataUri",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "TicketStatus"
+            }
+          },
+          {
+            "name": "refundEligible",
+            "type": "bool"
+          },
+          {
+            "name": "refundDeadline",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "refundedAt",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "refundAmount",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "refundReason",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "complianceVerified",
+            "type": "bool"
+          },
+          {
+            "name": "complianceData",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "insuranceCoverage",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "specialBenefits",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "qrCodeHash",
+            "type": {
+              "option": {
+                "array": [
+                  "u8",
+                  32
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DelegateAuthority",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ticket",
+            "type": "publicKey"
+          },
+          {
+            "name": "originalOwner",
+            "type": "publicKey"
+          },
+          {
+            "name": "emailHash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "claimCode",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "expiresAt",
+            "type": "i64"
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ValidationRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ticket",
+            "type": "publicKey"
+          },
+          {
+            "name": "validator",
+            "type": "publicKey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "gateId",
+            "type": "string"
+          },
+          {
+            "name": "validationType",
+            "type": {
+              "defined": "ValidationType"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "FreezeRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "ticket",
+            "type": "publicKey"
+          },
+          {
+            "name": "frozenBy",
+            "type": "publicKey"
+          },
+          {
+            "name": "freezeTimestamp",
+            "type": "i64"
+          },
+          {
+            "name": "reason",
+            "type": {
+              "defined": "FreezeReason"
+            }
+          },
+          {
+            "name": "evidence",
+            "type": "string"
+          },
+          {
+            "name": "unfrozen",
+            "type": "bool"
+          },
+          {
+            "name": "unfrozenBy",
+            "type": {
+              "option": "publicKey"
+            }
+          },
+          {
+            "name": "unfreezeTimestamp",
+            "type": {
+              "option": "i64"
+            }
+          },
+          {
+            "name": "unfreezeNote",
+            "type": {
+              "option": "string"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Whitelist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "event",
+            "type": "publicKey"
+          },
+          {
+            "name": "merkleRoot",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "maxPerWallet",
+            "type": "u8"
+          },
+          {
+            "name": "active",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "TierAnalytics",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tierName",
+            "type": "string"
+          },
+          {
+            "name": "soldCount",
+            "type": "u32"
+          },
+          {
+            "name": "revenue",
+            "type": "u64"
+          },
+          {
+            "name": "avgPrice",
+            "type": "u64"
+          },
+          {
+            "name": "sellThroughRate",
+            "type": "f32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GeoData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "region",
+            "type": {
+              "array": [
+                "u8",
+                2
+              ]
+            }
+          },
+          {
+            "name": "ticketCount",
+            "type": "u32"
+          },
+          {
+            "name": "revenue",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralData",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "source",
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "type": "u32"
+          },
+          {
+            "name": "conversionRate",
+            "type": "f32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TicketTier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "totalSupply",
+            "type": "u32"
+          },
+          {
+            "name": "mintedCount",
+            "type": "u32"
+          },
+          {
+            "name": "usedCount",
+            "type": "u32"
+          },
+          {
+            "name": "burnedCount",
+            "type": "u32"
+          },
+          {
+            "name": "refundedCount",
+            "type": "u32"
+          },
+          {
+            "name": "dynamicPricingEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "minPrice",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "type": {
+              "option": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundTier",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "hoursBefore",
+            "type": "u32"
+          },
+          {
+            "name": "refundPercentage",
+            "type": "u8"
+          },
+          {
+            "name": "feeBasisPoints",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransferRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "from",
+            "type": "publicKey"
+          },
+          {
+            "name": "to",
+            "type": "publicKey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "memo",
+            "type": {
+              "option": "string"
+            }
+          },
+          {
+            "name": "transferType",
+            "type": {
+              "defined": "TransferType"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "DelegateTransferRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "from",
+            "type": "publicKey"
+          },
+          {
+            "name": "to",
+            "type": "publicKey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "emailHash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "claimedAt",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Approved"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "KycStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NotStarted"
+          },
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Approved"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Expired"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundPolicy",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "NoRefunds"
+          },
+          {
+            "name": "FullRefund",
+            "fields": [
+              {
+                "name": "hoursBeforeEvent",
+                "type": "u32"
+              }
+            ]
+          },
+          {
+            "name": "TieredRefund",
+            "fields": [
+              {
+                "name": "tiers",
+                "type": {
+                  "vec": {
+                    "defined": "RefundTier"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "CustomPolicy",
+            "fields": [
+              {
+                "name": "handler",
+                "type": "publicKey"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "EventCancellation"
+          },
+          {
+            "name": "EventPostponement"
+          },
+          {
+            "name": "TicketTheft"
+          },
+          {
+            "name": "TechnicalIssue"
+          },
+          {
+            "name": "FraudulentSale"
+          },
+          {
+            "name": "Other",
+            "fields": [
+              "string"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "ClaimStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "UnderReview"
+          },
+          {
+            "name": "Approved"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Paid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Pending"
+          },
+          {
+            "name": "Approved"
+          },
+          {
+            "name": "Rejected"
+          },
+          {
+            "name": "Processed"
+          },
+          {
+            "name": "Cancelled"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TicketStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Valid"
+          },
+          {
+            "name": "Used"
+          },
+          {
+            "name": "Refunded"
+          },
+          {
+            "name": "Expired"
+          },
+          {
+            "name": "Frozen"
+          },
+          {
+            "name": "Burned"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TransferType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Direct"
+          },
+          {
+            "name": "Delegated"
+          },
+          {
+            "name": "Gift"
+          },
+          {
+            "name": "Marketplace"
+          },
+          {
+            "name": "Admin"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ValidationType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Entry"
+          },
+          {
+            "name": "Exit"
+          },
+          {
+            "name": "Checkpoint"
+          }
+        ]
+      }
+    },
+    {
+      "name": "FreezeReason",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "SuspectedFraud"
+          },
+          {
+            "name": "DuplicateDetected"
+          },
+          {
+            "name": "PaymentIssue"
+          },
+          {
+            "name": "SecurityConcern"
+          },
+          {
+            "name": "LegalHold"
+          },
+          {
+            "name": "Other"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RefundPolicy",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Full"
+          },
+          {
+            "name": "Percentage",
+            "fields": [
+              "u8"
+            ]
+          },
+          {
+            "name": "Tiered",
+            "fields": [
+              {
+                "name": "daysBefore",
+                "type": {
+                  "vec": {
+                    "defined": "(i64,u8)"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "EmergencyPauseEvent",
+      "fields": [
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "EmergencyUnpauseEvent",
+      "fields": [
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "EventUpdatedEvent",
+      "fields": [
+        {
+          "name": "eventId",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "EventCancelledEvent",
+      "fields": [
+        {
+          "name": "eventId",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "cancelledAt",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 7001,
+      "name": "EventNameTooLong",
+      "msg": "E1001: Event name too long (max 50 characters)"
+    },
+    {
+      "code": 7002,
+      "name": "EventNameEmpty",
+      "msg": "E1002: Event name cannot be empty"
+    },
+    {
+      "code": 7003,
+      "name": "DescriptionTooLong",
+      "msg": "E1003: Description too long (max 200 characters)"
+    },
+    {
+      "code": 7004,
+      "name": "DescriptionEmpty",
+      "msg": "E1004: Description cannot be empty"
+    },
+    {
+      "code": 7005,
+      "name": "VenueTooLong",
+      "msg": "E1005: Venue name too long (max 100 characters)"
+    },
+    {
+      "code": 7006,
+      "name": "VenueEmpty",
+      "msg": "E1006: Venue name cannot be empty"
+    },
+    {
+      "code": 7007,
+      "name": "InvalidEventDate",
+      "msg": "E1007: Event date must be in the future"
+    },
+    {
+      "code": 7008,
+      "name": "EventNotFound",
+      "msg": "E1008: Event not found"
+    },
+    {
+      "code": 7009,
+      "name": "EventCancelled",
+      "msg": "E1009: Event has been cancelled"
+    },
+    {
+      "code": 7010,
+      "name": "EventAlreadyStarted",
+      "msg": "E1010: Cannot update event after it has started"
+    },
+    {
+      "code": 7011,
+      "name": "CannotCancelStartedEvent",
+      "msg": "E1011: Cannot cancel event after it has started"
+    },
+    {
+      "code": 7012,
+      "name": "EventAlreadyExists",
+      "msg": "E1012: Event already exists"
+    },
+    {
+      "code": 7013,
+      "name": "InvalidTicketCount",
+      "msg": "E1013: Invalid ticket count"
+    },
+    {
+      "code": 7014,
+      "name": "EventAlreadyCancelled",
+      "msg": "E1014: Event has already been cancelled"
+    },
+    {
+      "code": 7015,
+      "name": "NameTooLong",
+      "msg": "E1015: Name exceeds maximum length"
+    },
+    {
+      "code": 7016,
+      "name": "InvalidEventDates",
+      "msg": "E1016: Invalid event dates"
+    },
+    {
+      "code": 8001,
+      "name": "InvalidTicketPrice",
+      "msg": "E2001: Invalid ticket price (must be greater than 0)"
+    },
+    {
+      "code": 8002,
+      "name": "EventFull",
+      "msg": "E2002: No tickets available"
+    },
+    {
+      "code": 8003,
+      "name": "TicketNotFound",
+      "msg": "E2003: Ticket not found"
+    },
+    {
+      "code": 8004,
+      "name": "AlreadyValidated",
+      "msg": "E2004: Ticket has already been validated"
+    },
+    {
+      "code": 8005,
+      "name": "InvalidTier",
+      "msg": "E2005: Invalid ticket tier"
+    },
+    {
+      "code": 8006,
+      "name": "TicketFrozen",
+      "msg": "E2006: Ticket is frozen"
+    },
+    {
+      "code": 8007,
+      "name": "MaximumTicketsExceeded",
+      "msg": "E2007: Maximum tickets per wallet exceeded"
+    },
+    {
+      "code": 8008,
+      "name": "NoActiveReservation",
+      "msg": "E2008: No active reservation"
+    },
+    {
+      "code": 8009,
+      "name": "ReservationExpired",
+      "msg": "E2009: Reservation expired"
+    },
+    {
+      "code": 8010,
+      "name": "InvalidValidationType",
+      "msg": "E2010: Invalid validation type"
+    },
+    {
+      "code": 9001,
+      "name": "TransferNotAllowed",
+      "msg": "E3001: Transfer not allowed for this ticket"
+    },
+    {
+      "code": 9002,
+      "name": "DelegationNotAllowed",
+      "msg": "E3002: Delegation not allowed for this ticket"
+    },
+    {
+      "code": 9003,
+      "name": "AlreadyDelegated",
+      "msg": "E3003: Ticket already delegated"
+    },
+    {
+      "code": 9004,
+      "name": "InvalidDelegate",
+      "msg": "E3004: Invalid delegate address"
+    },
+    {
+      "code": 9005,
+      "name": "SelfDelegationNotAllowed",
+      "msg": "E3005: Cannot delegate to self"
+    },
+    {
+      "code": 10001,
+      "name": "Unauthorized",
+      "msg": "E4001: Unauthorized access"
+    },
+    {
+      "code": 10002,
+      "name": "WhitelistRequired",
+      "msg": "E4002: Whitelist required for this event"
+    },
+    {
+      "code": 10003,
+      "name": "NotWhitelisted",
+      "msg": "E4003: Address not whitelisted"
+    },
+    {
+      "code": 10004,
+      "name": "AlreadyWhitelisted",
+      "msg": "E4004: Address already whitelisted"
+    },
+    {
+      "code": 10005,
+      "name": "InvalidComplianceLevel",
+      "msg": "E4005: Invalid compliance level"
+    },
+    {
+      "code": 11001,
+      "name": "InsufficientFunds",
+      "msg": "E5001: Insufficient funds"
+    },
+    {
+      "code": 11002,
+      "name": "InvalidAmount",
+      "msg": "E5002: Invalid amount"
+    },
+    {
+      "code": 11003,
+      "name": "RefundPeriodExpired",
+      "msg": "E5003: Refund period expired"
+    },
+    {
+      "code": 11004,
+      "name": "RefundAlreadyRequested",
+      "msg": "E5004: Refund already requested"
+    },
+    {
+      "code": 11005,
+      "name": "NoRefundRequested",
+      "msg": "E5005: No refund requested"
+    },
+    {
+      "code": 11006,
+      "name": "InvalidRefundStatus",
+      "msg": "E5006: Invalid refund status"
+    },
+    {
+      "code": 11007,
+      "name": "AlreadyRefunded",
+      "msg": "E5007: Already refunded"
+    },
+    {
+      "code": 12001,
+      "name": "SystemPaused",
+      "msg": "E6001: System is paused"
+    },
+    {
+      "code": 12002,
+      "name": "AlreadyPaused",
+      "msg": "E6002: System is already paused"
+    },
+    {
+      "code": 12003,
+      "name": "NotPaused",
+      "msg": "E6003: System is not paused"
+    },
+    {
+      "code": 12004,
+      "name": "InvalidFreezeReason",
+      "msg": "E6004: Invalid freeze reason"
+    },
+    {
+      "code": 12005,
+      "name": "ArithmeticOverflow",
+      "msg": "E6005: Arithmetic overflow"
+    },
+    {
+      "code": 12006,
+      "name": "InvalidAccount",
+      "msg": "E6006: Invalid account"
+    },
+    {
+      "code": 13001,
+      "name": "InvalidMetadata",
+      "msg": "E7001: Invalid metadata"
+    },
+    {
+      "code": 13002,
+      "name": "InvalidPrice",
+      "msg": "Invalid price"
+    },
+    {
+      "code": 13003,
+      "name": "EventSoldOut",
+      "msg": "Event sold out"
+    },
+    {
+      "code": 13004,
+      "name": "InvalidTicketTier",
+      "msg": "Invalid ticket tier"
+    },
+    {
+      "code": 13005,
+      "name": "InsufficientCapacity",
+      "msg": "Insufficient capacity"
+    },
+    {
+      "code": 13006,
+      "name": "BatchSizeTooLarge",
+      "msg": "Batch size too large"
+    },
+    {
+      "code": 13007,
+      "name": "MathOverflow",
+      "msg": "Math overflow"
+    },
+    {
+      "code": 13008,
+      "name": "MathUnderflow",
+      "msg": "Math underflow"
+    },
+    {
+      "code": 13009,
+      "name": "WhitelistExpired",
+      "msg": "Whitelist expired"
+    },
+    {
+      "code": 13010,
+      "name": "NotTicketOwner",
+      "msg": "Not ticket owner"
+    },
+    {
+      "code": 13011,
+      "name": "TicketAlreadyUsed",
+      "msg": "Ticket already used"
+    },
+    {
+      "code": 13012,
+      "name": "TransfersNotAllowed",
+      "msg": "Transfers not allowed"
+    },
+    {
+      "code": 13013,
+      "name": "TransferWindowClosed",
+      "msg": "Transfer window closed"
+    },
+    {
+      "code": 13014,
+      "name": "InvalidDelegateAuthority",
+      "msg": "Invalid delegate authority"
+    },
+    {
+      "code": 13015,
+      "name": "DelegateAlreadyClaimed",
+      "msg": "Delegate already claimed"
+    },
+    {
+      "code": 13016,
+      "name": "DelegateExpired",
+      "msg": "Delegate expired"
+    },
+    {
+      "code": 13017,
+      "name": "InvalidEmailHash",
+      "msg": "Invalid email hash"
+    },
+    {
+      "code": 13018,
+      "name": "InvalidClaimCode",
+      "msg": "Invalid claim code"
+    },
+    {
+      "code": 13019,
+      "name": "UnauthorizedValidator",
+      "msg": "Unauthorized validator"
+    },
+    {
+      "code": 13020,
+      "name": "EventNotStarted",
+      "msg": "Event not started"
+    },
+    {
+      "code": 13021,
+      "name": "EventEnded",
+      "msg": "Event ended"
+    },
+    {
+      "code": 13022,
+      "name": "AlreadyValidatedForEntry",
+      "msg": "Already validated for entry"
+    },
+    {
+      "code": 13023,
+      "name": "TicketNotValidated",
+      "msg": "Ticket not validated"
+    },
+    {
+      "code": 13024,
+      "name": "UnauthorizedBurner",
+      "msg": "Unauthorized burner"
+    },
+    {
+      "code": 13025,
+      "name": "TicketAlreadyFrozen",
+      "msg": "Ticket already frozen"
+    },
+    {
+      "code": 13026,
+      "name": "UnauthorizedFreezer",
+      "msg": "Unauthorized freezer"
+    },
+    {
+      "code": 13027,
+      "name": "TicketNotFrozen",
+      "msg": "Ticket not frozen"
+    },
+    {
+      "code": 13028,
+      "name": "UnauthorizedUnfreezer",
+      "msg": "Unauthorized unfreezer"
+    },
+    {
+      "code": 13029,
+      "name": "RefundNotEligible",
+      "msg": "Refund not eligible"
+    },
+    {
+      "code": 13030,
+      "name": "RefundWindowClosed",
+      "msg": "Refund window closed"
+    },
+    {
+      "code": 13031,
+      "name": "InvalidCharacters",
+      "msg": "Invalid characters"
+    },
+    {
+      "code": 13032,
+      "name": "PriceOutOfRange",
+      "msg": "Price out of range"
+    },
+    {
+      "code": 13033,
+      "name": "EventInPast",
+      "msg": "Event in past"
+    },
+    {
+      "code": 13034,
+      "name": "InvalidDateRange",
+      "msg": "Invalid date range"
+    },
+    {
+      "code": 13035,
+      "name": "RateLimitExceeded",
+      "msg": "Rate limit exceeded"
+    },
+    {
+      "code": 13036,
+      "name": "InsufficientSigners",
+      "msg": "Insufficient signers"
+    }
+  ]
+}

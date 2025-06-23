@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id                String   @id @default(uuid())
+  ticketId          BigInt   @unique @map("ticket_id")
+  eventId           String   @map("event_id")
+  ticketPDA         String   @unique @map("ticket_pda")
+  ownerWallet       String   @map("owner_wallet")
+  ownerEmail        String?  @map("owner_email")
+  
+  tier              String
+  purchasePrice     BigInt   @map("purchase_price")
+  
+  mintJobId         String?  @map("mint_job_id")
+  mintStatus        String   @default("PENDING") @map("mint_status")
+  mintedAt          DateTime? @map("minted_at")
+  transactionId     String?  @map("transaction_id")
+  
+  qrCode            String?  
+  verificationCode  String?  @map("verification_code")
+  
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  
+  @@index([eventId])
+  @@index([ownerWallet])
+  @@index([ownerEmail])
+  @@map("tickets")
+}
+
+model MintJob {
+  id            String   @id @default(uuid())
+  jobId         String   @unique @map("job_id")
+  eventId       String   @map("event_id")
+  userId        String   @map("user_id")
+  status        String
+  attempts      Int      @default(0)
+  error         String?
+  result        String?
+  
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  
+  @@index([eventId])
+  @@index([userId])
+  @@map("mint_jobs")
+}

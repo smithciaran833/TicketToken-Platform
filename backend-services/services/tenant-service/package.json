@@ -1,0 +1,39 @@
+{
+  "name": "tickettoken-tenant-service",
+  "version": "1.0.0",
+  "description": "Multi-tenant white label service for TicketToken",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.0",
+    "@prisma/client": "^5.7.0",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "stripe": "^14.0.0",
+    "aws-sdk": "^2.1500.0",
+    "cloudflare": "^2.9.1",
+    "sharp": "^0.32.0",
+    "handlebars": "^4.7.8",
+    "css-tree": "^2.3.1",
+    "sass": "^1.69.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/express": "^4.17.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/bcryptjs": "^2.4.0",
+    "typescript": "^5.3.0",
+    "ts-node-dev": "^2.0.0",
+    "jest": "^29.7.0",
+    "@types/jest": "^29.5.0"
+  }
+}

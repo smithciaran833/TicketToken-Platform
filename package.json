@@ -1,0 +1,16 @@
+{
+  "name": "tickettoken-platform",
+  "version": "1.0.0",
+  "description": "Complete blockchain ticketing platform - Weeks 1-17 implemented",
+  "scripts": {
+    "install-all": "npm run install-contracts && npm run install-services && npm run install-apps",
+    "install-contracts": "cd smart-contracts && find . -name 'package.json' -execdir npm install \\;",
+    "install-services": "cd backend-services && find . -name 'package.json' -execdir npm install \\;",
+    "install-apps": "cd frontend-apps && find . -name 'package.json' -execdir npm install \\;",
+    "build-all": "npm run build-contracts && npm run build-services && npm run build-apps",
+    "test-all": "npm run test-contracts && npm run test-services && npm run test-apps"
+  },
+  "keywords": ["blockchain", "ticketing", "solana", "nft", "defi"],
+  "author": "Ciaran Smith",
+  "license": "MIT"
+}
