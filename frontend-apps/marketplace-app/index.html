@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketToken - Revolutionary Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2">🎫 TicketToken Marketplace</h1>
+            <p class="text-xl text-gray-300">First Platform in History to Pay Artists on Resales</p>
+        </header>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Create Listing -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold mb-4">🎫 List Your Ticket</h2>
+                <div class="space-y-4">
+                    <input type="text" id="ticketMint" placeholder="Ticket ID" class="w-full p-3 bg-gray-700 rounded">
+                    <input type="number" id="price" placeholder="Price (SOL)" step="0.1" class="w-full p-3 bg-gray-700 rounded">
+                    <input type="text" id="seller" placeholder="Your Wallet" class="w-full p-3 bg-gray-700 rounded">
+                    <button onclick="createListing()" class="w-full bg-blue-600 hover:bg-blue-700 p-3 rounded font-bold">
+                        🎫 Create Listing with Royalty Protection
+                    </button>
+                </div>
+                <div id="listingResult" class="mt-4 p-4 bg-gray-700 rounded hidden"></div>
+            </div>
+
+            <!-- Buy Ticket -->
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h2 class="text-2xl font-bold mb-4">💰 Buy Ticket</h2>
+                <div class="space-y-4">
+                    <input type="text" id="listingId" placeholder="Listing ID" class="w-full p-3 bg-gray-700 rounded">
+                    <input type="text" id="buyer" placeholder="Your Wallet" class="w-full p-3 bg-gray-700 rounded">
+                    <button onclick="buyTicket()" class="w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold">
+                        💰 Buy with Automatic Artist Royalties
+                    </button>
+                </div>
+                <div id="buyResult" class="mt-4 p-4 bg-gray-700 rounded hidden"></div>
+            </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">📊 Revolutionary Impact</h2>
+            <button onclick="getAnalytics()" class="bg-purple-600 hover:bg-purple-700 p-3 rounded font-bold mb-4">
+                📊 Load Market Analytics
+            </button>
+            <div id="analyticsResult" class="grid md:grid-cols-3 gap-4 hidden"></div>
+        </div>
+
+        <!-- Features -->
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-lg text-center">
+                <h3 class="text-xl font-bold mb-2">🎨 Artist Royalties</h3>
+                <p>First platform to pay artists on every resale</p>
+            </div>
+            <div class="bg-gradient-to-r from-green-600 to-blue-600 p-6 rounded-lg text-center">
+                <h3 class="text-xl font-bold mb-2">🛡️ Anti-Scalping</h3>
+                <p>Price caps prevent exploitation</p>
+            </div>
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-6 rounded-lg text-center">
+                <h3 class="text-xl font-bold mb-2">⚡ Instant Settlement</h3>
+                <p>Payments in seconds, not weeks</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3005';
+
+        async function createListing() {
+            const ticketMint = document.getElementById('ticketMint').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const seller = document.getElementById('seller').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/listings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticketMint, price, seller })
+                });
+                
+                const result = await response.json();
+                const resultDiv = document.getElementById('listingResult');
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="text-green-400">
+                            <p class="font-bold">✅ ${result.message}</p>
+                            <p>📝 Listing ID: ${result.listingId}</p>
+                            <p>🎨 ${result.royaltyInfo.artistWillEarn}</p>
+                            <p>🏟️ ${result.royaltyInfo.venueWillEarn}</p>
+                            <p>🛡️ Max price: ${result.royaltyInfo.priceCap}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="text-red-400">
+                            <p class="font-bold">❌ ${result.error}</p>
+                            <p>Max allowed: ${result.maxPrice} SOL</p>
+                            <p>Your price: ${result.yourPrice} SOL</p>
+                        </div>
+                    `;
+                }
+                resultDiv.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function buyTicket() {
+            const listingId = document.getElementById('listingId').value;
+            const buyer = document.getElementById('buyer').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/buy/${listingId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ buyer })
+                });
+                
+                const result = await response.json();
+                const resultDiv = document.getElementById('buyResult');
+                
+                resultDiv.innerHTML = `
+                    <div class="text-green-400">
+                        <p class="font-bold text-lg">🎉 ${result.message}</p>
+                        <div class="mt-2 space-y-1">
+                            <p>💰 Total: ${result.breakdown.total}</p>
+                            <p>🎨 Artist: ${result.breakdown.artist}</p>
+                            <p>🏟️ Venue: ${result.breakdown.venue}</p>
+                            <p>💼 Platform: ${result.breakdown.platform}</p>
+                            <p>👤 Seller: ${result.breakdown.seller}</p>
+                        </div>
+                        <p class="mt-2 text-sm">🔗 TX: ${result.transaction}</p>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function getAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE}/api/analytics`);
+                const result = await response.json();
+                const resultDiv = document.getElementById('analyticsResult');
+                
+                resultDiv.innerHTML = `
+                    <div class="bg-blue-900 p-4 rounded">
+                        <h3 class="font-bold mb-2">📈 Market Stats</h3>
+                        <p>Listings: ${result.marketStats.totalListings}</p>
+                        <p>Sales: ${result.marketStats.totalSales}</p>
+                        <p>Avg Price: ${result.marketStats.averageResalePrice}</p>
+                    </div>
+                    <div class="bg-green-900 p-4 rounded">
+                        <h3 class="font-bold mb-2">💰 Artist Impact</h3>
+                        <p>Royalties Paid: ${result.marketStats.artistRoyaltiesPaid}</p>
+                        <p>Artist Earnings: ${result.revolutionaryImpact.artistEarnings}</p>
+                        <p class="text-sm text-green-300">🎨 Industry First!</p>
+                    </div>
+                    <div class="bg-purple-900 p-4 rounded">
+                        <h3 class="font-bold mb-2">🛡️ Protection</h3>
+                        <p>Fraud Prevented: ${result.marketStats.fraudPrevented}</p>
+                        <p>Fan Savings: ${result.revolutionaryImpact.fanSavings}</p>
+                        <p class="text-sm text-purple-300">No more scalping!</p>
+                    </div>
+                `;
+                resultDiv.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

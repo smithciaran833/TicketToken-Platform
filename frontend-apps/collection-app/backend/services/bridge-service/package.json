@@ -1,0 +1,37 @@
+{
+  "name": "tickettoken-bridge-service",
+  "version": "1.0.0",
+  "description": "Cross-chain bridge and multi-chain support service",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "express-rate-limit": "^6.8.1",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.1",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "winston": "^3.10.0",
+    "@solana/web3.js": "^1.87.6",
+    "@coral-xyz/anchor": "^0.28.0",
+    "ethers": "^6.7.0",
+    "web3": "^4.0.0",
+    "@chainlink/contracts": "^0.6.1",
+    "node-cron": "^3.0.2",
+    "bignumber.js": "^9.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "@types/express": "^4.17.17",
+    "@types/cors": "^2.8.13",
+    "typescript": "^5.1.6",
+    "ts-node-dev": "^2.0.0"
+  }
+}

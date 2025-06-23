@@ -1,0 +1,9 @@
+{
+  "name": "collection-app",
+  "version": "1.0.0",
+  "description": "TicketToken Revolutionary Collection Interface",
+  "scripts": {
+    "dev": "python3 -m http.server 3010",
+    "start": "python3 -m http.server 3010"
+  }
+}

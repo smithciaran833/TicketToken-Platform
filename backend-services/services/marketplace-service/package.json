@@ -1,0 +1,14 @@
+{
+  "name": "marketplace-service",
+  "version": "1.0.0",
+  "description": "TicketToken Revolutionary Marketplace Backend",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
+    "test": "echo '✅ Marketplace tests would run here'"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
